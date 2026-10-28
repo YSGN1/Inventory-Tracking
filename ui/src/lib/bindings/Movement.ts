@@ -7,4 +7,4 @@ import type { ProductId } from "./ProductId";
 import type { UserId } from "./UserId";
 import type { VariantId } from "./VariantId";
 
-export type Movement = { id: MovementId, variant_id: VariantId | null, product_id: ProductId | null, product_name: string, variant_name: string, firm_id: FirmId | null, firm_name: string | null, kind: MovementKind, delta: bigint, quantity: bigint, printed: boolean | null, note: string | null, source: MovementSource, reverses: MovementId | null, reversed_by: MovementId | null, created_at: bigint, created_by: UserId, };
+export type Movement = { id: MovementId, variant_id: VariantId | null, product_id: ProductId | null, product_name: string, variant_name: string, firm_id: FirmId | null, firm_name: string | null, kind: MovementKind, delta: number, quantity: number, printed: boolean | null, note: string | null, source: MovementSource, reverses: MovementId | null, reversed_by: MovementId | null, created_at: number, created_by: UserId, };

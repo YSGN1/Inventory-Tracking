@@ -2,4 +2,4 @@
 import type { AuditAction } from "./AuditAction";
 import type { UserId } from "./UserId";
 
-export type AuditEntry = { id: string, entity: string, entity_id: string, action: AuditAction, before: unknown, after: unknown, user_id: UserId, user_name: string | null, created_at: bigint, };
+export type AuditEntry = { id: string, entity: string, entity_id: string, action: AuditAction, before: unknown, after: unknown, user_id: UserId, user_name: string | null, created_at: number, };

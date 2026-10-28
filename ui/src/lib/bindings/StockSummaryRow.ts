@@ -2,4 +2,4 @@
 import type { ProductId } from "./ProductId";
 import type { VariantId } from "./VariantId";
 
-export type StockSummaryRow = { variant_id: VariantId, product_id: ProductId, product_name: string, variant_name: string, total_in: bigint, total_out: bigint, total_adjust: bigint, current: bigint, min_stock: bigint, };
+export type StockSummaryRow = { variant_id: VariantId, product_id: ProductId, product_name: string, variant_name: string, total_in: number, total_out: number, total_adjust: number, current: number, min_stock: number, };

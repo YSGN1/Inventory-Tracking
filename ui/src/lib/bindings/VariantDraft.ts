@@ -3,4 +3,4 @@
 /**
  * Ürünle birlikte oluşturulacak varyant.
  */
-export type VariantDraft = { name: string, sku: string | null, min_stock: bigint, };
+export type VariantDraft = { name: string, sku: string | null, min_stock: number, };

@@ -2,4 +2,4 @@
 import type { ProductId } from "./ProductId";
 import type { VariantId } from "./VariantId";
 
-export type Variant = { id: VariantId, product_id: ProductId, name: string, sku: string | null, min_stock: bigint, stock_qty: bigint, row_version: bigint, deleted_at: bigint | null, };
+export type Variant = { id: VariantId, product_id: ProductId, name: string, sku: string | null, min_stock: number, stock_qty: number, row_version: number, deleted_at: number | null, };

@@ -2,4 +2,4 @@
 import type { Product } from "./Product";
 import type { Variant } from "./Variant";
 
-export type ProductWithVariants = { product: Product, variants: Array<Variant>, total_stock: bigint, };
+export type ProductWithVariants = { product: Product, variants: Array<Variant>, total_stock: number, };

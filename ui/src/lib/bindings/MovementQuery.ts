@@ -5,4 +5,4 @@ import type { MovementKind } from "./MovementKind";
 import type { ProductId } from "./ProductId";
 import type { VariantId } from "./VariantId";
 
-export type MovementQuery = { variant_id: VariantId | null, product_id: ProductId | null, firm_id: FirmId | null, kind: MovementKind | null, from_ms: bigint | null, to_ms: bigint | null, limit: number, before: MovementId | null, };
+export type MovementQuery = { variant_id: VariantId | null, product_id: ProductId | null, firm_id: FirmId | null, kind: MovementKind | null, from_ms: number | null, to_ms: number | null, limit: number, before: MovementId | null, };

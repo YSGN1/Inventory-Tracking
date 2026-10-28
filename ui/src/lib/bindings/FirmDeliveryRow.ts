@@ -2,7 +2,7 @@
 import type { FirmId } from "./FirmId";
 import type { MovementId } from "./MovementId";
 
-export type FirmDeliveryRow = { firm_id: FirmId | null, firm_name: string, product_name: string, variant_name: string, quantity: bigint, printed: boolean, date_ms: bigint, movement_id: MovementId, 
+export type FirmDeliveryRow = { firm_id: FirmId | null, firm_name: string, product_name: string, variant_name: string, quantity: number, printed: boolean, date_ms: number, movement_id: MovementId, 
 /**
  * Ürün veya varyant çöpte / kalıcı silinmiş.
  */

@@ -2,4 +2,4 @@
 import type { Role } from "./Role";
 import type { UserId } from "./UserId";
 
-export type User = { id: UserId, username: string, display_name: string, role: Role, active: boolean, row_version: bigint, };
+export type User = { id: UserId, username: string, display_name: string, role: Role, active: boolean, row_version: number, };

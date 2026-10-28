@@ -4,4 +4,4 @@ import type { MovementKind } from "./MovementKind";
 import type { MovementSource } from "./MovementSource";
 import type { VariantId } from "./VariantId";
 
-export type NewMovement = { variant_id: VariantId, kind: MovementKind, quantity: bigint, firm_id: FirmId | null, printed: boolean | null, note: string | null, idempotency_key: string, source: MovementSource, };
+export type NewMovement = { variant_id: VariantId, kind: MovementKind, quantity: number, firm_id: FirmId | null, printed: boolean | null, note: string | null, idempotency_key: string, source: MovementSource, };
