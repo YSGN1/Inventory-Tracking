@@ -119,7 +119,7 @@
 		{/each}
 	</div>
 
-	<form class="grid gap-3" onsubmit={submit}>
+	<form id="movement-form" class="grid gap-3" onsubmit={submit}>
 		<label class="field">
 			<span>{tr.movements.variant}</span>
 			<select class="input" bind:value={selected} aria-label={tr.movements.variant} disabled={!!correcting}>
@@ -181,7 +181,7 @@
 
 	{#snippet footer()}
 		<button type="button" class="btn" onclick={onClose}>{tr.common.cancel}</button>
-		<button type="button" class="btn btn-primary" disabled={busy || !valid} onclick={submit}>{tr.movements.record}</button>
+		<button type="submit" form="movement-form" class="btn btn-primary" disabled={busy || !valid}>{tr.movements.record}</button>
 	{/snippet}
 </Modal>
 

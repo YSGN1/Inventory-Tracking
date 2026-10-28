@@ -21,7 +21,9 @@
 
 	$effect(() => {
 		if (open && panel) {
-			const first = panel.querySelector<HTMLElement>('[data-autofocus], input, select, textarea, button');
+			const first =
+				panel.querySelector<HTMLElement>('[data-autofocus]') ??
+				panel.querySelector<HTMLElement>('input, select, textarea, button');
 			first?.focus();
 		}
 	});
@@ -59,7 +61,7 @@
 	.backdrop {
 		position: fixed;
 		inset: 0;
-		background: color-mix(in srgb, var(--ink) 35%, transparent);
+		background: rgb(10 14 20 / 0.5);
 		display: grid;
 		place-items: start center;
 		padding: 10vh 16px 16px;

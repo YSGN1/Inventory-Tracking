@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../ui/build",
     "devUrl": "http://localhost:5173",
-    "beforeDevCommand": "npm --prefix ui run dev",
-    "beforeBuildCommand": "npm --prefix ui run build"
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
   },
   "app": {
     "windows": [
@@ -16,7 +16,8 @@
         "width": 1280,
         "height": 820,
         "minWidth": 960,
-        "minHeight": 600
+        "minHeight": 600,
+        "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --lang=tr"
       }
     ],
     "security": {
