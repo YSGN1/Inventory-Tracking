@@ -210,8 +210,9 @@ impl Store {
                 SELECT m.*, u.display_name AS user_name,
                        CASE WHEN m.variant_id IS NULL OR v.id IS NULL OR v.deleted_at IS NOT NULL
                                  OR p.id IS NULL OR p.deleted_at IS NOT NULL
-                                 OR (m.firm_name IS NOT NULL AND (f.id IS NULL OR f.deleted_at IS NOT NULL))
-                            THEN 1 ELSE 0 END AS entity_deleted
+                            THEN 1 ELSE 0 END AS entity_deleted,
+                       CASE WHEN m.firm_name IS NOT NULL AND (f.id IS NULL OR f.deleted_at IS NOT NULL)
+                            THEN 1 ELSE 0 END AS firm_deleted
                 FROM stock_movements m
                 LEFT JOIN variants v ON v.id = m.variant_id
                 LEFT JOIN products p ON p.id = m.product_id
@@ -225,7 +226,7 @@ impl Store {
                AND ($5 IS NULL OR x.kind = $5)
                AND ($6 IS NULL OR x.created_at >= $6)
                AND ($7 IS NULL OR x.created_at <= $7)
-               AND ($8 = 1 OR x.entity_deleted = 0)
+               AND ($8 = 1 OR (x.entity_deleted = 0 AND x.firm_deleted = 0))
                AND ($9 IS NULL OR x.id < $9)
              ORDER BY x.id DESC LIMIT $10",
         )
@@ -248,6 +249,7 @@ impl Store {
                     movement: movement_from_row(r)?,
                     user_name: r.try_get("user_name").db()?,
                     entity_deleted: r.try_get::<i64, _>("entity_deleted").db()? == 1,
+                    firm_deleted: r.try_get::<i64, _>("firm_deleted").db()? == 1,
                 })
             })
             .collect()

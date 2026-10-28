@@ -42,6 +42,7 @@ pub struct FirmDeliveryTotal {
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[ts(export)]
+#[serde(default)]
 pub struct DeliveryQuery {
     pub firm_id: Option<FirmId>,
     pub from_ms: Option<i64>,

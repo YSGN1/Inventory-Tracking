@@ -8,6 +8,14 @@ import type { UserId } from "./UserId";
 import type { VariantId } from "./VariantId";
 
 /**
- * Hareket + görünüm alanları. `entity_deleted`: ürün/varyant/firma çöpte veya kalıcı silinmiş.
+ * Hareket + görünüm alanları.
  */
-export type MovementView = { user_name: string | null, entity_deleted: boolean, id: MovementId, variant_id: VariantId | null, product_id: ProductId | null, product_name: string, variant_name: string, firm_id: FirmId | null, firm_name: string | null, kind: MovementKind, delta: bigint, quantity: bigint, printed: boolean | null, note: string | null, source: MovementSource, reverses: MovementId | null, reversed_by: MovementId | null, created_at: bigint, created_by: UserId, };
+export type MovementView = { user_name: string | null, 
+/**
+ * Ürün veya varyant çöpte / kalıcı silinmiş.
+ */
+entity_deleted: boolean, 
+/**
+ * Firma çöpte / kalıcı silinmiş.
+ */
+firm_deleted: boolean, id: MovementId, variant_id: VariantId | null, product_id: ProductId | null, product_name: string, variant_name: string, firm_id: FirmId | null, firm_name: string | null, kind: MovementKind, delta: bigint, quantity: bigint, printed: boolean | null, note: string | null, source: MovementSource, reverses: MovementId | null, reversed_by: MovementId | null, created_at: bigint, created_by: UserId, };

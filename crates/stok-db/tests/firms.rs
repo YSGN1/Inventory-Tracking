@@ -11,7 +11,7 @@ fn nf(name: &str) -> NewFirm {
     let (s, ctx) = seeded().await;
     s.create_firm(&ctx, nf("ABC Matbaa")).await.unwrap();
     assert!(matches!(s.create_firm(&ctx, nf("abc matbaa")).await, Err(DomainError::Validation{field:"name",..})));
-    assert!(matches!(s.create_firm(&ctx, nf("İz Ajans")).await, Ok(_)));
+    assert!(s.create_firm(&ctx, nf("İz Ajans")).await.is_ok());
     assert!(matches!(s.create_firm(&ctx, nf("iz ajans")).await, Err(DomainError::Validation{field:"name",..})));
 }
 #[tokio::test] async fn stale_firm_update_conflicts() {

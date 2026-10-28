@@ -68,7 +68,7 @@ pub struct Movement {
     pub created_by: UserId,
 }
 
-/// Hareket + görünüm alanları. `entity_deleted`: ürün/varyant/firma çöpte veya kalıcı silinmiş.
+/// Hareket + görünüm alanları.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[ts(export)]
 pub struct MovementView {
@@ -76,11 +76,15 @@ pub struct MovementView {
     #[ts(flatten)]
     pub movement: Movement,
     pub user_name: Option<String>,
+    /// Ürün veya varyant çöpte / kalıcı silinmiş.
     pub entity_deleted: bool,
+    /// Firma çöpte / kalıcı silinmiş.
+    pub firm_deleted: bool,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[ts(export)]
+#[serde(default)]
 pub struct MovementQuery {
     pub variant_id: Option<VariantId>,
     pub product_id: Option<ProductId>,
@@ -98,6 +102,7 @@ pub struct MovementQuery {
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[ts(export)]
+#[serde(default)]
 pub struct StockSummaryQuery {
     pub search: Option<String>,
     pub from_ms: Option<i64>,

@@ -93,6 +93,7 @@ pub struct ProductWithVariants {
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[ts(export)]
+#[serde(default)]
 pub struct ProductQuery {
     pub search: Option<String>,
 }

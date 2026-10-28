@@ -1,0 +1,35 @@
+[package]
+name = "stok-takip-app"
+edition.workspace = true
+rust-version.workspace = true
+version.workspace = true
+default-run = "stok-takip"
+
+[lib]
+name = "stok_takip_app"
+crate-type = ["rlib"]
+
+[[bin]]
+name = "stok-takip"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+stok-core.workspace = true
+stok-db.workspace = true
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+ts-rs.workspace = true
+base64 = "0.22"
+
+[dev-dependencies]
+tauri = { version = "2", features = ["test"] }
+stok-db = { workspace = true, features = ["test-util"] }
+tempfile.workspace = true
