@@ -11,3 +11,4 @@ pub mod movement;
 pub mod catalog;
 pub mod firm;
 pub mod report;
+pub mod trash;

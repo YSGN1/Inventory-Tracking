@@ -243,7 +243,14 @@ impl Store {
         if before.row_version != expected_version {
             return Err(DomainError::Conflict);
         }
-        let now = now_ms();
+        // deleted_at, ürünle birlikte silinen varyantların işaretidir; daha önce ayrıca
+        // silinmiş varyantlarla aynı milisaniyeye düşmemeli.
+        let last_variant_trash: Option<i64> = sqlx::query_scalar("SELECT MAX(deleted_at) FROM variants WHERE product_id = $1")
+            .bind(id.to_string())
+            .fetch_one(&mut *tx)
+            .await
+            .db()?;
+        let now = now_ms().max(last_variant_trash.map_or(0, |t| t + 1));
         sqlx::query("UPDATE products SET deleted_at = $1, updated_at = $1, row_version = row_version + 1 WHERE id = $2 AND row_version = $3")
             .bind(now)
             .bind(id.to_string())
