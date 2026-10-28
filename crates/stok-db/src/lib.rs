@@ -1,4 +1,5 @@
 mod audit;
+mod catalog;
 mod store;
 
 pub use audit::{AuditAction, AuditEntry};
