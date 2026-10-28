@@ -1,5 +1,6 @@
 mod audit;
 mod catalog;
+mod firms;
 mod movements;
 mod store;
 
