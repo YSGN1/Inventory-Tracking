@@ -68,7 +68,58 @@ pub struct Movement {
     pub created_by: UserId,
 }
 
+/// Hareket + görünüm alanları. `entity_deleted`: ürün/varyant/firma çöpte veya kalıcı silinmiş.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[ts(export)]
+pub struct MovementView {
+    #[serde(flatten)]
+    #[ts(flatten)]
+    pub movement: Movement,
+    pub user_name: Option<String>,
+    pub entity_deleted: bool,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[ts(export)]
+pub struct MovementQuery {
+    pub variant_id: Option<VariantId>,
+    pub product_id: Option<ProductId>,
+    pub firm_id: Option<FirmId>,
+    pub kind: Option<MovementKind>,
+    pub from_ms: Option<i64>,
+    pub to_ms: Option<i64>,
+    /// Komut katmanında rolden belirlenir; istemciden alınmaz.
+    #[serde(skip)]
+    #[ts(skip)]
+    pub include_deleted: bool,
+    pub limit: u32,
+    pub before: Option<MovementId>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[ts(export)]
+pub struct StockSummaryQuery {
+    pub search: Option<String>,
+    pub from_ms: Option<i64>,
+    pub to_ms: Option<i64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, TS)]
+#[ts(export)]
+pub struct StockSummaryRow {
+    pub variant_id: VariantId,
+    pub product_id: ProductId,
+    pub product_name: String,
+    pub variant_name: String,
+    pub total_in: i64,
+    pub total_out: i64,
+    pub total_adjust: i64,
+    pub current: i64,
+    pub min_stock: i64,
+}
+
 pub const NOTE_MAX: usize = 500;
+pub const DEFAULT_PAGE: u32 = 200;
 
 pub fn validate(m: &NewMovement) -> Result<(), DomainError> {
     match m.kind {

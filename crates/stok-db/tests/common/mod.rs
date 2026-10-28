@@ -32,3 +32,24 @@ pub async fn with_variant() -> (Store, Ctx, VariantId) {
 pub async fn stock(s: &Store, ctx: &Ctx, v: VariantId) -> i64 {
     s.get_variant(ctx, v).await.unwrap().stock_qty
 }
+
+use stok_core::movement::*;
+
+fn mv(v: VariantId, kind: MovementKind, qty: i64, key: &str) -> NewMovement {
+    NewMovement { variant_id: v, kind, quantity: qty, firm_id: None, printed: None, note: None,
+        idempotency_key: key.into(), source: MovementSource::Local }
+}
+pub fn mv_in(v: VariantId, qty: i64, key: &str) -> NewMovement { mv(v, MovementKind::In, qty, key) }
+pub fn mv_out(v: VariantId, qty: i64, key: &str) -> NewMovement { mv(v, MovementKind::Out, qty, key) }
+pub fn mv_adjust(v: VariantId, qty: i64, key: &str) -> NewMovement { mv(v, MovementKind::Adjust, qty, key) }
+pub fn mv_out_firm(v: VariantId, qty: i64, firm: FirmId, printed: bool, key: &str) -> NewMovement {
+    NewMovement { firm_id: Some(firm), printed: Some(printed), ..mv(v, MovementKind::Out, qty, key) }
+}
+
+pub fn by_variant(v: VariantId) -> MovementQuery {
+    MovementQuery { variant_id: Some(v), include_deleted: true, limit: 1000, ..Default::default() }
+}
+
+pub fn all_movements(include_deleted: bool) -> MovementQuery {
+    MovementQuery { include_deleted, limit: 1000, ..Default::default() }
+}
