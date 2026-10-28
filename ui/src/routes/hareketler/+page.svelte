@@ -8,10 +8,12 @@
 	import EmptyState from '$lib/components/EmptyState.svelte';
 	import MovementDialog from '$lib/components/MovementDialog.svelte';
 	import { dayEnd, dayStart, fmtDate, fmtNum, fmtSigned } from '$lib/format';
+	import { latest } from '$lib/latest';
 	import { kindLabel, tr } from '$lib/i18n/tr';
 	import { attempt, bumpRefresh, isAdmin, toast, ui } from '$lib/state.svelte';
 
 	const PAGE = 100;
+	const newest = latest();
 
 	let rows = $state<MovementView[] | null>(null);
 	let firms = $state<Firm[]>([]);
@@ -35,10 +37,11 @@
 	});
 
 	async function load(reset: boolean) {
-		if (loading) return;
+		// Sayfa eklemeyi çiftlemeyelim; filtre değişince (reset) yükleme her zaman başlar.
+		if (loading && !reset) return;
 		loading = true;
 		const before = reset ? null : (rows?.at(-1)?.id ?? null);
-		const r = await attempt(api.listMovements({ ...filters(), before }));
+		const r = await newest(attempt(api.listMovements({ ...filters(), before })));
 		loading = false;
 		if (!r) return;
 		rows = reset ? r : [...(rows ?? []), ...r];

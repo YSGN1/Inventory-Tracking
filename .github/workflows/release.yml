@@ -1,0 +1,75 @@
+name: Sürüm paketleri
+
+# `v*` etiketi push edilince üç platformda test + paketleme yapılır ve taslak sürüm oluşturulur.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-latest
+            args: ''
+          - platform: macos-latest
+            args: '--target universal-apple-darwin'
+          - platform: ubuntu-22.04
+            args: ''
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Linux bağımlılıkları (WebKitGTK 4.1)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - uses: swatinem/rust-cache@v2
+
+      - name: Arayüz bağımlılıkları
+        working-directory: ui
+        run: npm ci
+
+      - name: Rust testleri
+        run: cargo test --workspace
+
+      - name: Arayüz testleri
+        working-directory: ui
+        run: npx vitest run
+
+      - name: Paketle
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # İsteğe bağlı macOS imzalama/notarization; tanımlı değilse imzasız paket üretilir.
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          tauriScript: npx --yes @tauri-apps/cli@2
+          args: ${{ matrix.args }}
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Stok Takip ${{ github.ref_name }}'
+          releaseBody: 'Kurulum dosyaları aşağıdadır. Ayrıntılar: docs/kurulum.md'
+          releaseDraft: true
+          prerelease: false
