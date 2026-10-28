@@ -1,0 +1,202 @@
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-sans/700.css';
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+	--paper: #f2f3f0;
+	--surface: #ffffff;
+	--surface-2: #f7f8f5;
+	--ink: #1b2330;
+	--muted: #5d6775;
+	--line: #d8dcd6;
+	--line-strong: #b9bfb7;
+	--accent: #d99a00;
+	--accent-soft: #fbf0d0;
+	--accent-ink: #6b4b00;
+	--primary: #1b2330;
+	--primary-ink: #ffffff;
+	--danger: #b42318;
+	--danger-soft: #fde8e6;
+	--ok: #2e7a4b;
+	--ok-soft: #e3f2e8;
+	--sidebar: #1b2330;
+	--sidebar-ink: #c9d0da;
+	--sidebar-active: #2a3445;
+	--focus: #d99a00;
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	--paper: #13171d;
+	--surface: #1a1f27;
+	--surface-2: #1f252e;
+	--ink: #e6e9ee;
+	--muted: #98a2b0;
+	--line: #2b323c;
+	--line-strong: #3b4451;
+	--accent: #f0b429;
+	--accent-soft: #3a2f10;
+	--accent-ink: #f6d27a;
+	--primary: #e6e9ee;
+	--primary-ink: #13171d;
+	--danger: #f0786b;
+	--danger-soft: #3b1e1b;
+	--ok: #6cc28c;
+	--ok-soft: #17301f;
+	--sidebar: #0f1318;
+	--sidebar-ink: #a7b0bd;
+	--sidebar-active: #1f262f;
+	color-scheme: dark;
+}
+
+@theme inline {
+	--font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+	--color-paper: var(--paper);
+	--color-surface: var(--surface);
+	--color-surface-2: var(--surface-2);
+	--color-ink: var(--ink);
+	--color-muted: var(--muted);
+	--color-line: var(--line);
+	--color-line-strong: var(--line-strong);
+	--color-accent: var(--accent);
+	--color-accent-soft: var(--accent-soft);
+	--color-accent-ink: var(--accent-ink);
+	--color-primary: var(--primary);
+	--color-primary-ink: var(--primary-ink);
+	--color-danger: var(--danger);
+	--color-danger-soft: var(--danger-soft);
+	--color-ok: var(--ok);
+	--color-ok-soft: var(--ok-soft);
+}
+
+html,
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: 'IBM Plex Sans', system-ui, sans-serif;
+	font-size: 14px;
+	line-height: 1.45;
+	-webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 2px;
+}
+
+.num {
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+	white-space: nowrap;
+}
+
+/* Form öğeleri */
+.field {
+	display: grid;
+	gap: 4px;
+}
+.field > span {
+	font-size: 12.5px;
+	font-weight: 500;
+	color: var(--muted);
+}
+.input {
+	height: 34px;
+	padding: 0 10px;
+	border: 1px solid var(--line-strong);
+	border-radius: 6px;
+	background: var(--surface);
+	color: var(--ink);
+	width: 100%;
+}
+textarea.input {
+	height: auto;
+	padding: 8px 10px;
+}
+.input:focus {
+	border-color: var(--ink);
+	outline: none;
+	box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.input[aria-invalid='true'] {
+	border-color: var(--danger);
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 34px;
+	padding: 0 14px;
+	border-radius: 6px;
+	border: 1px solid var(--line-strong);
+	background: var(--surface);
+	color: var(--ink);
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.btn:hover:not(:disabled) {
+	border-color: var(--ink);
+}
+.btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+.btn-primary {
+	background: var(--primary);
+	color: var(--primary-ink);
+	border-color: var(--primary);
+}
+.btn-danger {
+	background: var(--danger);
+	color: #fff;
+	border-color: var(--danger);
+}
+.btn-ghost {
+	border-color: transparent;
+	background: transparent;
+}
+.btn-sm {
+	height: 28px;
+	padding: 0 10px;
+	font-size: 13px;
+}
+
+/* Tablolar */
+table.data {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--surface);
+}
+table.data th {
+	text-align: left;
+	font-weight: 500;
+	font-size: 12.5px;
+	color: var(--muted);
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--line-strong);
+	position: sticky;
+	top: 0;
+	background: var(--surface);
+	z-index: 1;
+}
+table.data td {
+	padding: 9px 12px;
+	border-bottom: 1px solid var(--line);
+	vertical-align: middle;
+}
+table.data tbody tr:hover {
+	background: var(--surface-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+		transition: none !important;
+	}
+}
