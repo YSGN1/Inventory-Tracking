@@ -87,6 +87,15 @@ pub fn format_date_tr(ms: i64) -> String {
         .unwrap_or_default()
 }
 
+/// `YYYYMMDD` (Europe/Istanbul) — günlük yedek dosya adı için.
+pub fn date_stamp_tr(ms: i64) -> String {
+    chrono_tz::Europe::Istanbul
+        .timestamp_millis_opt(ms)
+        .single()
+        .map(|d| d.format("%Y%m%d").to_string())
+        .unwrap_or_default()
+}
+
 /// Excel'in Türkçe karakterleri doğru açması için UTF-8 BOM + `;` ayraç.
 pub fn rows_to_csv(rows: &[FirmDeliveryRow]) -> String {
     let mut w = csv::WriterBuilder::new().delimiter(b';').from_writer(Vec::new());
