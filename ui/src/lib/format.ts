@@ -11,7 +11,8 @@ const numFmt = new Intl.NumberFormat('tr-TR');
 export const fmtDate = (ms: number) => dateFmt.format(new Date(ms));
 export const fmtDay = (ms: number) => dayFmt.format(new Date(ms));
 export const fmtNum = (n: number) => numFmt.format(n);
-export const fmtSigned = (n: number) => (n > 0 ? `+${numFmt.format(n)}` : numFmt.format(n));
+// Eksi için tipografik eksi (−) kullanılır; tabloda tire ile karışmasın.
+export const fmtSigned = (n: number) => (n > 0 ? `+${numFmt.format(n)}` : n < 0 ? `−${numFmt.format(-n)}` : '0');
 
 /** Türkçe kurala göre baş harf (i → İ). */
 export const initial = (s: string) => (s.trim()[0] ?? '?').toLocaleUpperCase('tr-TR');

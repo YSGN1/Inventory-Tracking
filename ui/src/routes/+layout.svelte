@@ -7,7 +7,8 @@
 	import AppShell from '$lib/components/AppShell.svelte';
 	import Toast from '$lib/components/Toast.svelte';
 	import { tr } from '$lib/i18n/tr';
-	import { attempt, hooks, session } from '$lib/state.svelte';
+	import MovementDialog from '$lib/components/MovementDialog.svelte';
+	import { attempt, hooks, session, ui } from '$lib/state.svelte';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -51,6 +52,7 @@
 	<AppShell onLogout={logout}>
 		{@render children()}
 	</AppShell>
+	<MovementDialog open={ui.movementOpen} variantId={ui.movementVariantId} onClose={() => (ui.movementOpen = false)} />
 {:else if onAuthPage}
 	{@render children()}
 {/if}
