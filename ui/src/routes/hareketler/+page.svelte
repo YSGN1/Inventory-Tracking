@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { api } from '$lib/api';
 	import type { Firm } from '$lib/bindings/Firm';
 	import type { MovementKind } from '$lib/bindings/MovementKind';
@@ -51,7 +52,8 @@
 	$effect(() => {
 		void ui.refreshKey;
 		void [kind, firmId, from, to];
-		load(true);
+		// load() kendi durumunu okuyup yazar; izlenirse her bitişte yeniden başlar.
+		untrack(() => load(true));
 	});
 
 	$effect(() => {

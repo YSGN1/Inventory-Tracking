@@ -181,7 +181,9 @@ export const tr = {
 	settings: {
 		title: 'Ayarlar',
 		singleUser: 'Tek kullanıcı modu',
-		singleUserHint: 'Açıkken uygulama giriş sormadan yönetici olarak açılır.',
+		singleUserHint: 'Açıkken uygulama giriş sormadan açılır.',
+		singleUserOffHint: (username: string) =>
+			`Kapatırsanız açılışta giriş istenir. Önce "Parolamı değiştir" ile bir parola belirleyin; kullanıcı adınız: ${username}`,
 		retention: 'Çöp kutusu süresi (gün)',
 		retentionHint: '1 ile 365 gün arası.',
 		backupNow: 'Şimdi yedekle',

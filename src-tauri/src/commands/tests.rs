@@ -161,6 +161,8 @@ async fn startup_purges_expired() {
 async fn restore_backup_swaps_database() {
     let dir = tempfile::tempdir().unwrap();
     let app = admin_app(dir.path()).await;
+    // girişli (çok kullanıcılı) modda geri yükleme oturumu kapatır
+    settings::set_single_user_mode(app.state(), false).await.unwrap();
     let bak = dir.path().join("elle.db");
     settings::backup_now(app.state(), bak.to_string_lossy().into()).await.unwrap();
     catalog::create_product(app.state(), np("Kupa")).await.unwrap();
@@ -172,5 +174,30 @@ async fn restore_backup_swaps_database() {
     assert_eq!(e.code, "validation");
     // still works after rejected restore
     assert!(catalog::list_products(app.state(), ProductQuery::default()).await.is_ok());
+    close(&app).await;
+}
+
+#[tokio::test]
+async fn fresh_install_opens_without_login() {
+    let dir = tempfile::tempdir().unwrap();
+    let app = app_at(dir.path()).await;
+    app.state::<AppState>().prepare_single_user().await.unwrap();
+    let st = auth::app_status(app.state()).await.unwrap();
+    assert!(st.initialized && st.single_user_mode);
+    assert_eq!(st.user.unwrap().role, Role::Admin);
+    // running it again does not create a second account
+    app.state::<AppState>().prepare_single_user().await.unwrap();
+    assert_eq!(auth::list_users(app.state()).await.unwrap().len(), 1);
+    close(&app).await;
+}
+
+#[tokio::test]
+async fn existing_install_without_setting_opens_without_login() {
+    let dir = tempfile::tempdir().unwrap();
+    let app = admin_app(dir.path()).await;
+    close(&app).await;
+    drop(app);
+    let app = app_at(dir.path()).await;
+    assert_eq!(auth::app_status(app.state()).await.unwrap().user.unwrap().username, "yonetici");
     close(&app).await;
 }

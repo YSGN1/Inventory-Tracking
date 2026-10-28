@@ -11,12 +11,8 @@
 		{ href: '/hareketler', label: tr.nav.movements },
 		{ href: '/firmalar', label: tr.nav.firms },
 		{ href: '/raporlar', label: tr.nav.reports },
-		...(isAdmin()
-			? [
-					{ href: '/cop-kutusu', label: tr.nav.trash },
-					{ href: '/kullanicilar', label: tr.nav.users }
-				]
-			: []),
+		...(isAdmin() ? [{ href: '/cop-kutusu', label: tr.nav.trash }] : []),
+		...(isAdmin() && !session.status?.single_user_mode ? [{ href: '/kullanicilar', label: tr.nav.users }] : []),
 		{ href: '/ayarlar', label: tr.nav.settings }
 	]);
 

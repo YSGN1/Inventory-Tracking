@@ -26,7 +26,7 @@ pub async fn get_settings(state: State<'_, AppState>) -> ApiResult<Settings> {
     let store = state.store().await;
     let days = store.get_setting(&ctx, RETENTION_KEY).await?.and_then(|v| v.parse().ok()).unwrap_or(DEFAULT_RETENTION_DAYS);
     Ok(Settings {
-        single_user_mode: store.get_setting(&ctx, SINGLE_USER_KEY).await?.as_deref() == Some("1"),
+        single_user_mode: store.get_setting(&ctx, SINGLE_USER_KEY).await?.as_deref() != Some("0"),
         trash_retention_days: days,
         backups_dir: state.paths.backups.to_string_lossy().into_owned(),
     })

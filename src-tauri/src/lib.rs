@@ -18,8 +18,12 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
-            let state = tauri::async_runtime::block_on(startup(AppPaths::under(&dir)))
-                .map_err(|e| format!("Veritabanı açılamadı: {}", e.user_message()))?;
+            let state = tauri::async_runtime::block_on(async {
+                let s = startup(AppPaths::under(&dir)).await?;
+                s.prepare_single_user().await?;
+                Ok::<_, stok_core::DomainError>(s)
+            })
+            .map_err(|e| format!("Veritabanı açılamadı: {}", e.user_message()))?;
             app.manage(state);
             // Uygulama açıkken süresi dolan çöp kayıtları düzenli temizlenir.
             let handle = app.handle().clone();

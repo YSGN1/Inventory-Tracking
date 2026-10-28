@@ -75,6 +75,9 @@
 				<div>
 					<strong>{tr.settings.singleUser}</strong>
 					<p class="text-muted">{tr.settings.singleUserHint}</p>
+					{#if settings.single_user_mode}
+						<p class="text-muted">{tr.settings.singleUserOffHint(session.status?.user?.username ?? '')}</p>
+					{/if}
 				</div>
 			</label>
 		</section>

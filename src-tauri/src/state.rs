@@ -9,6 +9,7 @@ use uuid::Uuid;
 use crate::error::{ApiError, ApiResult};
 
 pub const BACKUPS_TO_KEEP: usize = 14;
+pub const DEFAULT_ADMIN: &str = "yonetici";
 
 #[derive(Debug, Clone)]
 pub struct AppPaths {
@@ -52,6 +53,17 @@ impl AppState {
         }
     }
 
+    /// İlk kurulumda hesap sormadan bir yönetici oluşturur ve oturum açar.
+    /// Parola rastgeledir; giriş istenirse Ayarlar'dan parola belirlenir.
+    pub async fn prepare_single_user(&self) -> Result<(), DomainError> {
+        let store = self.store().await;
+        if !store.is_initialized().await? {
+            let password = format!("{}{}", Uuid::now_v7().simple(), Uuid::now_v7().simple());
+            store.create_first_admin(DEFAULT_ADMIN, "Yönetici", &password).await?;
+        }
+        self.auto_login_if_single_user().await
+    }
+
     /// Tek kullanıcı modunda oturum yoksa ilk aktif yöneticiyle açar.
     pub async fn auto_login_if_single_user(&self) -> Result<(), DomainError> {
         if self.session.lock().await.is_some() {
@@ -72,9 +84,10 @@ pub async fn system_ctx(store: &Store) -> Result<Ctx, DomainError> {
     Ok(Ctx { tenant_id: store.default_tenant().await?, user_id: UserId(Uuid::nil()) })
 }
 
+/// Varsayılan açık: ayar hiç yapılmadıysa uygulama giriş sormaz.
 pub async fn is_single_user(store: &Store) -> Result<bool, DomainError> {
     let ctx = system_ctx(store).await?;
-    Ok(store.get_setting(&ctx, SINGLE_USER_KEY).await?.as_deref() == Some("1"))
+    Ok(store.get_setting(&ctx, SINGLE_USER_KEY).await?.as_deref() != Some("0"))
 }
 
 pub async fn purge_expired_now(store: &Store) -> Result<u32, DomainError> {

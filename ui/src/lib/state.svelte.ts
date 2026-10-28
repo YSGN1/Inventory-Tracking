@@ -36,8 +36,9 @@ export async function attempt<T>(p: Promise<T>): Promise<T | undefined> {
 		return await p;
 	} catch (e) {
 		const err = toApiError(e);
+		// Oturum düştüyse giriş ekranı kendini anlatır; her istek için uyarı basılmaz.
 		if (err.code === 'unauthenticated') hooks.onUnauthenticated();
-		toast(err.message, 'error');
+		else toast(err.message, 'error');
 		return undefined;
 	}
 }
