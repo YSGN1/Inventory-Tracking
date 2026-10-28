@@ -12,3 +12,4 @@ pub mod catalog;
 pub mod firm;
 pub mod report;
 pub mod trash;
+pub mod user;

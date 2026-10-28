@@ -18,3 +18,9 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"
 tempfile = "3"
 stok-core = { path = "crates/stok-core" }
 stok-db = { path = "crates/stok-db" }
+
+# Parola özetleme testlerde de hızlı çalışsın.
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
