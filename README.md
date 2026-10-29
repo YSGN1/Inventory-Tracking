@@ -1,5 +1,8 @@
 # Stok Takip
 
+**[⬇ Windows için indir (setup.exe)](https://github.com/YSGN1/Inventory-Tracking/releases/latest)** —
+sayfadaki `Stok.Takip_x.y.z_x64-setup.exe` dosyasını indirip çift tıklayın.
+
 Küçük işletmeler için masaüstü stok takip programı. Windows, macOS ve Linux'ta çalışır; veriler
 internete gönderilmez, bilgisayarınızda saklanır.
 
