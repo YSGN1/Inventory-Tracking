@@ -5,7 +5,17 @@
 	import DeleteConfirmDialog from '$lib/components/DeleteConfirmDialog.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { tr } from '$lib/i18n/tr';
-	import { attempt, isAdmin, session, toast } from '$lib/state.svelte';
+	import { attempt, isAdmin, session, toast, updates } from '$lib/state.svelte';
+
+	let checking = $state(false);
+	async function checkUpdates() {
+		checking = true;
+		const info = await attempt(api.checkUpdate());
+		checking = false;
+		if (!info) return;
+		updates.info = info;
+		toast(info.available ? tr.update.available(info.available) : tr.update.upToDate);
+	}
 
 	let settings = $state<Settings | null>(null);
 	let retention = $state(30);
@@ -112,6 +122,11 @@
 
 	<section>
 		<button class="btn" onclick={() => (pwOpen = true)}>{tr.settings.changePassword}</button>
+	</section>
+
+	<section class="flex items-center gap-3 flex-wrap">
+		<strong>{tr.update.version(updates.info?.current ?? '…')}</strong>
+		<button class="btn btn-sm" onclick={checkUpdates} disabled={checking}>{tr.update.check}</button>
 	</section>
 </div>
 

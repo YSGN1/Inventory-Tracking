@@ -16,6 +16,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             let state = tauri::async_runtime::block_on(async {
@@ -80,6 +81,8 @@ pub fn run() {
             settings::backup_now,
             settings::restore_backup,
             settings::open_backups_dir,
+            update::check_update,
+            update::install_update,
         ])
         .run(tauri::generate_context!())
         .expect("Stok Takip başlatılamadı");

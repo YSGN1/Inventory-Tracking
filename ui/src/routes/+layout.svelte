@@ -8,7 +8,7 @@
 	import Toast from '$lib/components/Toast.svelte';
 	import { tr } from '$lib/i18n/tr';
 	import MovementDialog from '$lib/components/MovementDialog.svelte';
-	import { attempt, hooks, session, ui } from '$lib/state.svelte';
+	import { attempt, hooks, session, ui, updates } from '$lib/state.svelte';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -43,7 +43,11 @@
 		await refreshStatus();
 	}
 
-	onMount(refreshStatus);
+	onMount(async () => {
+		await refreshStatus();
+		// Sessiz denetim: çevrimdışıysa ya da yerel derlemedeyse hiçbir şey göstermez.
+		if (session.status?.user) updates.info = await api.checkUpdate().catch(() => null);
+	});
 </script>
 
 {#if !session.status}

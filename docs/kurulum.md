@@ -29,13 +29,46 @@ cd ui && npm ci && cd ..
 ui/node_modules/.bin/tauri dev      # geliştirme
 cargo test --workspace              # Rust testleri
 npm --prefix ui test                # arayüz testleri
-ui/node_modules/.bin/tauri build    # bu platform için kurulum paketi
 ```
 
-Sürüm yayınlamak: `git tag v0.1.0 && git push origin v0.1.0`. GitHub Actions üç platformun
-paketlerini taslak sürüme yükler. macOS imzası için depo gizlerine `APPLE_CERTIFICATE`,
-`APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`,
-`APPLE_TEAM_ID` eklenir; yoksa paket imzasız üretilir.
+Yerel kurulum paketi (`tauri build`) güncelleme dosyalarını da imzalar, bu yüzden gizli anahtarı ister:
+
+```sh
+TAURI_SIGNING_PRIVATE_KEY="$(cat ~/.tauri/stok-takip.key)" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" \
+  ui/node_modules/.bin/tauri build
+```
+
+Yerel derlemede güncelleme adresi boştur; bu sürümler kendini güncellemez. Güncellenebilir sürümler
+yalnız GitHub'da derlenir.
+
+## Yayınlama ve güncellemeler
+
+Güncellemeler GitHub Releases üzerinden dağıtılır ve imzalıdır: uygulama yalnız
+`src-tauri/tauri.conf.json` içindeki açık anahtarla eşleşen gizli anahtarla imzalanmış güncellemeyi kurar.
+
+**Gizli anahtar:** `C:\Users\<kullanıcı>\.tauri\stok-takip.key` (parolasız). Depoya **asla** eklenmez.
+Kaybolursa kurulu programlar bir daha güncellenemez; güvenli bir yere (ör. parola yöneticisi) yedekleyin.
+
+İlk kurulum (bir kez):
+
+1. GitHub'da herkese açık bir depo açın ve kodu gönderin.
+2. Depo → Settings → Secrets and variables → Actions → **New repository secret**:
+   - `TAURI_SIGNING_PRIVATE_KEY`: anahtar dosyasının içeriği
+   - `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` gerekmez (anahtar parolasız).
+
+Her yeni sürüm:
+
+```sh
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+GitHub Actions üç platformda testleri çalıştırır, sürüm numarasını etiketten alır, güncelleme
+adresini deponun adından üretir, paketleri imzalar ve sürümü yayınlar. Kurulu uygulamalar
+bir sonraki açılışta yeni sürümü görür.
+
+macOS imzası için isteğe bağlı gizler: `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`,
+`APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`; yoksa paket imzasız üretilir.
 
 Windows'ta "Akıllı Uygulama Denetimi" (Smart App Control) açıksa derleme sırasında yeni
 üretilen test dosyaları ara sıra engellenebilir (`os error 4551`); komutu yeniden çalıştırmak yeterlidir.

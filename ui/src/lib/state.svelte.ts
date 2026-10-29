@@ -1,3 +1,4 @@
+import type { UpdateInfo } from './bindings/UpdateInfo';
 import type { AppStatus } from './bindings/AppStatus';
 import { ApiError, toApiError } from './api';
 
@@ -63,3 +64,6 @@ export function openMovement(variantId: string | null = null) {
 export function bumpRefresh() {
 	ui.refreshKey++;
 }
+
+/** Açılışta bir kez denetlenen güncelleme bilgisi. */
+export const updates = $state<{ info: UpdateInfo | null }>({ info: null });

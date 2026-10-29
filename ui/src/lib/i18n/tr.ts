@@ -198,6 +198,15 @@ export const tr = {
 		backups: 'Yedekler',
 		autoBackupHint: 'Uygulama her gün açılışta otomatik yedek alır; son 14 gün saklanır.'
 	},
+	update: {
+		available: (v: string) => `Yeni sürüm ${v} hazır`,
+		update: 'Güncelle',
+		confirm: 'Güncelle ve yeniden başlat',
+		confirmDesc: 'Verileriniz önce yedeklenir, sonra yeni sürüm indirilip kurulur ve uygulama yeniden açılır.',
+		version: (v: string) => `Sürüm ${v}`,
+		check: 'Güncellemeleri denetle',
+		upToDate: 'Uygulama güncel'
+	},
 	errors: {
 		generic: 'İşlem tamamlanamadı'
 	}

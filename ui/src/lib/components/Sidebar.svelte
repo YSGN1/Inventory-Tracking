@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { tr } from '$lib/i18n/tr';
-	import { isAdmin, openMovement, session } from '$lib/state.svelte';
+	import { isAdmin, openMovement, session, updates } from '$lib/state.svelte';
+	import UpdateBanner from './UpdateBanner.svelte';
 
 	let { onLogout }: { onLogout: () => void } = $props();
 
@@ -53,6 +54,8 @@
 			<a href={l.href} class:active={active(l.href)} aria-current={active(l.href) ? 'page' : undefined}>{l.label}</a>
 		{/each}
 	</nav>
+
+	<UpdateBanner info={updates.info} />
 
 	<div class="foot">
 		<div class="who">

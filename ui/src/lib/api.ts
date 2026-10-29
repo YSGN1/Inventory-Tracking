@@ -24,6 +24,7 @@ import type { StockSummaryQuery } from './bindings/StockSummaryQuery';
 import type { StockSummaryRow } from './bindings/StockSummaryRow';
 import type { TrashItem } from './bindings/TrashItem';
 import type { TrashKind } from './bindings/TrashKind';
+import type { UpdateInfo } from './bindings/UpdateInfo';
 import type { User } from './bindings/User';
 import type { Variant } from './bindings/Variant';
 import type { VariantPatch } from './bindings/VariantPatch';
@@ -145,7 +146,10 @@ export const api = {
 	setTrashRetentionDays: (days: number) => call<void>('set_trash_retention_days', { days }),
 	backupNow: (destPath: string) => call<void>('backup_now', { destPath }),
 	restoreBackup: (srcPath: string) => call<AppStatus>('restore_backup', { srcPath }),
-	openBackupsDir: () => call<void>('open_backups_dir')
+	openBackupsDir: () => call<void>('open_backups_dir'),
+
+	checkUpdate: () => call<UpdateInfo>('check_update'),
+	installUpdate: () => call<void>('install_update')
 };
 
 export type Api = typeof api;
