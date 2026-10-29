@@ -56,12 +56,16 @@ jobs:
 
       - name: Sürümü ve güncelleme adresini ayarla
         shell: bash
+        env:
+          # İmza anahtarı henüz eklenmediyse kurulum dosyası yine üretilir, güncelleme imzası atlanır.
+          HAS_SIGNING_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY != '' }}
         run: |
           node -e "
             const fs = require('fs'); const f = 'src-tauri/tauri.conf.json';
             const c = JSON.parse(fs.readFileSync(f, 'utf8'));
             c.version = process.env.GITHUB_REF_NAME.replace(/^v/, '');
             c.plugins.updater.endpoints = ['https://github.com/' + process.env.GITHUB_REPOSITORY + '/releases/latest/download/latest.json'];
+            if (process.env.HAS_SIGNING_KEY !== 'true') c.bundle.createUpdaterArtifacts = false;
             fs.writeFileSync(f, JSON.stringify(c, null, 2));
           "
 
